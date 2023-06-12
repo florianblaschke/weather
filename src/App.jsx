@@ -1,64 +1,51 @@
-import { uid } from "uid";
-import { ActivityCard } from "./components/ActivityCard";
 import { Form } from "./components/Form/index";
-import { useState, useEffect } from "react";
-import useLocalStorageState from "use-local-storage-state";
+import { Card } from "./components/ActivityCard/index";
+import { Display } from "./components/Display";
+import { useEffect, useState } from "react";
+import { uid } from "uid";
 import "./App.css";
-import { Display } from "./components/Display/index";
 
 const initialActivities = [
-  { activity: "Cycling", id: "3abh", key: "3abh" },
-  { activity: "Hiking", id: "7jnk", key: "7jnk" },
+  { activity: "Cycling", id: "3abh", weather: true },
+  { activity: "Hiking", id: "7jnk", weather: false },
 ];
 
 function App() {
-  const [activities, setActivities] = useState(initialActivities);
-  const [weather, setWeather] = useState(true);
-  const [location, setLocation] = useState("Middle Earth");
-  const [temperature, setTemperature] = useState("-270C°");
-  const [condition, setCondition] = useState("Could be better");
-
-  const url = "https://example-apis.vercel.app/api/weather";
-  async function getWeather() {
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      setWeather(data.isGoodWeather);
-      setLocation(data.location);
-      setTemperature(data.temperature);
-      setCondition(data.condition);
-    } catch {
-      console.log("Shit's coming down");
-    }
-  }
-
-  useEffect(() => {
-    const firstWeather = setInterval(getWeather, 5000);
-    return () => {
-      clearInterval(firstWeather);
-    };
-  }, []);
-
-  const badWeatherActivities = activities.filter((action) =>
-    action.goodWeather ? false : true
+  const [activity, setActivity] = useState(initialActivities);
+  const weatherActivity = activity.filter((action) =>
+    action.weather ? true : false
   );
 
-  function addActivity(newActivity) {
-    setActivities([
-      {
-        activity: newActivity.activity,
-        goodWeather: newActivity.goodWeather === "on" ? true : false,
-        id: uid(4),
-      },
-      ...activities,
-    ]);
-  }
+  console.log(weatherActivity);
+
+  const [location, setLocation] = useState("Middle Earth");
+  const [temperature, setTemperature] = useState("Hooooooot");
+  const [condition, setCondition] = useState("Cloudy");
 
   function deleteActivity(id) {
-    setActivities(
-      activities.filter((action) => (action.id === id ? false : true))
-    );
+    setActivity(activity.filter((action) => (action.id === id ? false : true)));
   }
+
+  function createActivity(newEntry) {
+    setActivity([{ ...newEntry, id: uid(4) }, ...activity]);
+    console.log(activity);
+  }
+  const [weather, setWeather] = useState(true);
+  const url = "https://example-apis.vercel.app/api/weather";
+
+  async function weatherData() {
+    const response = await fetch(url);
+    const data = await response.json();
+    setWeather(data.isGoodWeather);
+    setLocation(data.location);
+    setTemperature(data.temperature);
+    setCondition(data.condition);
+  }
+
+  // useEffect(() => {
+  //   const firstWeather = setInterval(weatherData, 10000);
+  //   return () => clearInterval(firstWeather);
+  // }, []);
 
   return (
     <>
@@ -67,19 +54,19 @@ function App() {
         temperature={temperature}
         condition={condition}
       />
-      <Form onAddActivity={addActivity} />
+      <Form onCreateActivity={createActivity} />
       {weather
-        ? activities.map((action) => (
-            <ActivityCard
-              onDeleteActivity={deleteActivity}
+        ? activity.map((action) => (
+            <Card
+              onDeleteActivtiy={deleteActivity}
               key={action.id}
               activity={action.activity}
               id={action.id}
             />
           ))
-        : badWeatherActivities.map((action) => (
-            <ActivityCard
-              onDeleteActivity={deleteActivity}
+        : weatherActivity.map((action) => (
+            <Card
+              onDeleteActivtiy={deleteActivity}
               key={action.id}
               activity={action.activity}
               id={action.id}

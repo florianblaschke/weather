@@ -1,11 +1,8 @@
-import "./index.css";
-
-export function ActivityCard({ activity, onDeleteActivity, id }) {
+export function Card({ activity, id, onDeleteActivtiy }) {
   return (
-    <div className="activity__card">
+    <div>
       <p>{activity}</p>
-      <button onClick={() => onDeleteActivity(id)}>Delete</button>
-      <p>This is such a nice activity!</p>
+      <button onClick={() => onDeleteActivtiy(id)}>Delete</button>
     </div>
   );
 }

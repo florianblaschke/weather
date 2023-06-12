@@ -1,24 +1,23 @@
-export function Form({ onAddActivity }) {
-  function collectData(event) {
+export function Form({ onCreateActivity }) {
+  function extractData(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData);
-    onAddActivity(data);
+    onCreateActivity(data);
     event.target.reset();
+    event.target.elements.activity.focus();
   }
   return (
     <>
-      <h2>Das Wetter in Europe</h2>
-      <form onSubmit={collectData}>
-        <label htmlFor="activity" id="activityname" name="activityname">
-          Your activity:
+      <h1>Weather</h1>
+      <form onSubmit={extractData}>
+        <label htmlFor="activity" name="activity">
+          Add activity:
         </label>
-        <input type="text" id="activity" name="activity" />
-        <label htmlFor="goodWeather" name="goodWeather" id="goodWeather">
-          Good-weather needed?
-        </label>
-        <input type="checkbox" name="goodWeather" id="goodWeather" />
-        <button type="submit">Add activity</button>
+        <input type="text" name="activity" id="activity" />
+        <label htmlFor="weather">Good weather needed?</label>
+        <input type="checkbox" name="weather" id="weather" />
+        <button>Add activity</button>
       </form>
     </>
   );

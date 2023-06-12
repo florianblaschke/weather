@@ -1,11 +1,9 @@
-import "./index.css";
-
-export function Display({ location, temperature, condition }) {
+export function Display({ condition, temperature, location }) {
   return (
-    <div className="weather__status">
-      <p className="location">Loaction: {location}</p>
-      <p className="temperature">Temperature: {temperature}</p>
-      <p className="condition">Condition: {condition}</p>
+    <div>
+      <p>Condition: {condition}</p>
+      <p>Temperature: {temperature}</p>
+      <p>Location: {location}</p>
     </div>
   );
 }
