@@ -16,8 +16,6 @@ function App() {
     action.weather ? true : false
   );
 
-  console.log(weatherActivity);
-
   const [location, setLocation] = useState("Middle Earth");
   const [temperature, setTemperature] = useState("Hooooooot");
   const [condition, setCondition] = useState("Cloudy");
@@ -30,7 +28,7 @@ function App() {
     setActivity([{ ...newEntry, id: uid(4) }, ...activity]);
     console.log(activity);
   }
-  const [weather, setWeather] = useState(false);
+  const [weather, setWeather] = useState(true);
   const url = "https://example-apis.vercel.app/api/weather";
 
   async function weatherData() {
@@ -53,12 +51,18 @@ function App() {
         location={location}
         temperature={temperature}
         condition={condition}
-        headline={
-          weather ? "Go play outside" : "It's a good day for a gaming session!"
-        }
+        // headline={
+        //   weather ? "Go play outside" : "It's a good day for a gaming session!"
+        // }
       />
       <Form onCreateActivity={createActivity} />
-      {weather
+      <Card
+        weather={weather}
+        onDeleteActivtiy={deleteActivity}
+        activity={activity}
+        weatherActivity={weatherActivity}
+      />
+      {/* {weather
         ? activity.map((action) => (
             <Card
               onDeleteActivtiy={deleteActivity}
@@ -74,7 +78,7 @@ function App() {
               activity={action.activity}
               id={action.id}
             />
-          ))}
+          ))} */}
     </>
   );
 }
