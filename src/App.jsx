@@ -30,7 +30,7 @@ function App() {
     setActivity([{ ...newEntry, id: uid(4) }, ...activity]);
     console.log(activity);
   }
-  const [weather, setWeather] = useState(true);
+  const [weather, setWeather] = useState(false);
   const url = "https://example-apis.vercel.app/api/weather";
 
   async function weatherData() {
@@ -53,6 +53,9 @@ function App() {
         location={location}
         temperature={temperature}
         condition={condition}
+        headline={
+          weather ? "Go play outside" : "It's a good day for a gaming session!"
+        }
       />
       <Form onCreateActivity={createActivity} />
       {weather
